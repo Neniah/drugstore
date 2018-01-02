@@ -47,3 +47,15 @@ while ($row = mysqli_fetch_array($query))
 mysqli_close ($con);
 
  ?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>
+      Homeo
+    </title>
+  </head>
+  <body>
+    <h1>Homeo</h1>
+  </body>
+</html>
