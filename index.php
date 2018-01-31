@@ -1,42 +1,92 @@
-<?php
-//including the database connection file
-include_once("config.php");
-
-//fetching data in descending order (lastest entry first)
-//$result = mysql_query("SELECT * FROM users ORDER BY id DESC"); // mysql_query is deprecated
-$result = mysqli_query($mysqli, "SELECT * FROM homeo ORDER BY name DESC"); // using mysqli_query instead
-?>
-
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-	<title>Homeopatia</title>
-	<link rel="stylesheet" href="/css/bootstrap.css">
+    <meta charset="UTF-8">
+    <title>Listado Homeopatia</title>
+    <!--
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+  -->
+  <link rel="stylesheet" href="bootstrap.css">
+  <script src="jquery.js"></script>
+  <script src="bootstrap.js"></script>
+    <style type="text/css">
+        .wrapper{
+            width: 700px;
+            margin: 0 auto;
+        }
+        .page-header h2{
+            margin-top: 0;
+        }
+        table tr td:last-child a{
+            margin-right: 15px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 </head>
-
 <body>
-	<div class="container">
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="page-header clearfix">
+                        <h2 class="pull-left">Listado</h2>
+                        <a href="create.php" class="btn btn-success pull-right">Añade Nuevo Registro</a>
+                    </div>
+                    <?php
+                    // Include config file
+                    require_once 'config.php';
 
-		<a href="add.html" class="btn btn-default btn-lg">Add New Data</a><br/><br/>
+                    // Attempt select query execution
+                    $sql = "SELECT * FROM homeo";
+                    if($result = $mysqli->query($sql)){
+                        if($result->num_rows > 0){
+                            echo "<table class='table table-bordered table-striped'>";
+                                echo "<thead>";
+                                    echo "<tr>";
+                                //        echo "<th>#</th>";
+                                        echo "<th>Nombre</th>";
+                                        echo "<th>Potencia</th>";
+                                        echo "<th>Cantidad</th>";
+                                        echo "<th>Opciones</th>";
+                                    echo "</tr>";
+                                echo "</thead>";
+                                echo "<tbody>";
+                                while($row = $result->fetch_array()){
+                                    echo "<tr>";
+                                    //    echo "<td>" . $row['id'] . "</td>";
+                                        echo "<td>" . $row['name'] . "</td>";
+                                        echo "<td>" . $row['composition'] . "</td>";
+                                        echo "<td>" . $row['quantity'] . "</td>";
+                                        echo "<td>";
+                                            echo "<a href='read.php?id=". $row['id'] ."' title='Ver Registro' data-toggle='tooltip' class='btn btn-info'>Ver</a>";
+                                            echo "<a href='update.php?id=". $row['id'] ."' title='Editar' data-toggle='tooltip' class='btn btn-success'>Editar</a>";
+                                            echo "<a href='delete.php?id=". $row['id'] ."' title='Borrar Registro' data-toggle='tooltip' class='btn btn-danger'>Borrar</a>";
+                                        echo "</td>";
+                                    echo "</tr>";
+                                }
+                                echo "</tbody>";
+                            echo "</table>";
+                            // Free result set
+                            $result->free();
+                        } else{
+                            echo "<p class='lead'><em>No se han encontrado registros.</em></p>";
+                        }
+                    } else{
+                        echo "ERROR: No hemos podidos ejecutar $sql. " . $mysqli->error;
+                    }
 
-			<table class="table">
-
-			<tr bgcolor='#CCCCCC'>
-				<td>Name</td>
-				<td>Quantity</td>
-				<td>Composition</td>
-				<td>Options</td>
-			</tr>
-			<?php
-			//while($res = mysql_fetch_array($result)) { // mysql_fetch_array is deprecated, we need to use mysqli_fetch_array
-			while($res = mysqli_fetch_array($result)) {
-				echo "<tr>";
-				echo "<td>".$res['name']."</td>";
-				echo "<td>".$res['quantity']."</td>";
-				echo "<td>".$res['composition']."</td>";
-				echo "<td><a href=\"edit.php?id=$res[id]\">Edit</a> | <a href=\"delete.php?id=$res[id]\" onClick=\"return confirm('Are you sure you want to delete?')\">Delete</a></td>";
-			}
-			?>
-			</table>
-	</div>
+                    // Close connection
+                    $mysqli->close();
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
