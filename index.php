@@ -10,29 +10,33 @@ $result = mysqli_query($mysqli, "SELECT * FROM homeo ORDER BY name DESC"); // us
 <html>
 <head>
 	<title>Homeopatia</title>
+	<link rel="stylesheet" href="/css/bootstrap.css">
 </head>
 
 <body>
-<a href="add.html">Add New Data</a><br/><br/>
+	<div class="container">
 
-	<table width='80%' border=0>
+		<a href="add.html" class="btn btn-default btn-lg">Add New Data</a><br/><br/>
 
-	<tr bgcolor='#CCCCCC'>
-		<td>Name</td>
-		<td>Quantity</td>
-		<td>Composition</td>
-		<td>Options</td>
-	</tr>
-	<?php
-	//while($res = mysql_fetch_array($result)) { // mysql_fetch_array is deprecated, we need to use mysqli_fetch_array
-	while($res = mysqli_fetch_array($result)) {
-		echo "<tr>";
-		echo "<td>".$res['name']."</td>";
-		echo "<td>".$res['quantity']."</td>";
-		echo "<td>".$res['composition']."</td>";
-		echo "<td><a href=\"edit.php?id=$res[id]\">Edit</a> | <a href=\"delete.php?id=$res[id]\" onClick=\"return confirm('Are you sure you want to delete?')\">Delete</a></td>";
-	}
-	?>
-	</table>
+			<table class="table">
+
+			<tr bgcolor='#CCCCCC'>
+				<td>Name</td>
+				<td>Quantity</td>
+				<td>Composition</td>
+				<td>Options</td>
+			</tr>
+			<?php
+			//while($res = mysql_fetch_array($result)) { // mysql_fetch_array is deprecated, we need to use mysqli_fetch_array
+			while($res = mysqli_fetch_array($result)) {
+				echo "<tr>";
+				echo "<td>".$res['name']."</td>";
+				echo "<td>".$res['quantity']."</td>";
+				echo "<td>".$res['composition']."</td>";
+				echo "<td><a href=\"edit.php?id=$res[id]\">Edit</a> | <a href=\"delete.php?id=$res[id]\" onClick=\"return confirm('Are you sure you want to delete?')\">Delete</a></td>";
+			}
+			?>
+			</table>
+	</div>
 </body>
 </html>
