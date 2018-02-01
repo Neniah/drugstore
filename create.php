@@ -30,7 +30,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $input_quantity = trim($_POST["quantity"]);
     if(empty($input_quantity)){
         $quantity_err = "Por favor introduce una cantidad.";
-    } elseif(!ctype_digit($input_quantity)){
+    } elseif(!ctype_digit(strval($input_quantity)){
         $quantity_err = 'Introduce una cantidad valida.';
     } else{
         $quantity = $input_quantity;

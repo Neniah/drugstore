@@ -11,6 +11,28 @@
   <link rel="stylesheet" href="bootstrap.css">
   <script src="jquery.js"></script>
   <script src="bootstrap.js"></script>
+  <script>
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
     <style type="text/css">
         .wrapper{
             width: 700px;
@@ -32,12 +54,21 @@
 <body>
     <div class="container">
         <div class="container-fluid">
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">Listado</h2>
                         <a href="create.php" class="btn btn-success pull-right">Añade Nuevo Registro</a>
                     </div>
+
+                    <div class="row">
+                      <div class="col-md-10">
+                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar por nombre...">
+
+                      </div>
+                    </div>
+                    <br>
                     <?php
                     // Include config file
                     require_once 'config.php';
@@ -46,7 +77,7 @@
                     $sql = "SELECT * FROM homeo";
                     if($result = $mysqli->query($sql)){
                         if($result->num_rows > 0){
-                            echo "<table class='table table-bordered table-striped'>";
+                            echo "<table class='table table-bordered table-striped' id='myTable'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                 //        echo "<th>#</th>";
